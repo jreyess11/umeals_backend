@@ -31,4 +31,5 @@ INSERT INTO `umeals`.`productos` (`Nombre`, `Precio`, `imgURL`, `cantidad`, `EMP
 INSERT INTO `umeals`.`productos` (`Nombre`, `Precio`, `imgURL`, `cantidad`, `EMPRENDIMIENTO_idEMPRENDIMIENTOS`) VALUES ('Red Velvet Rellena de Nutella', '7000', 'https://drive.usercontent.google.com/download?id=1kDvU6BiFm-ZJpItmyvNfgD5JlZMuZRwY', '2', '4');
 INSERT INTO `umeals`.`productos` (`Nombre`, `Precio`, `imgURL`, `cantidad`, `EMPRENDIMIENTO_idEMPRENDIMIENTOS`) VALUES ('Chips de chocolate', '7000', 'https://drive.usercontent.google.com/download?id=15Qx3pWPCs3RRBSq7MQwwZFo34GQ5etcQ', '2', '4');
 INSERT INTO `umeals`.`productos` (`Nombre`, `Precio`, `imgURL`, `cantidad`, `EMPRENDIMIENTO_idEMPRENDIMIENTOS`) VALUES ('Red velvet rellena frosting queso crema', '7000', 'https://drive.usercontent.google.com/download?id=1buOkC0BJvI4CdqHJhjEsYCUYuKSE9LY2', '2', '4');
+UPDATE `umeals`.`emprendimiento` SET `portada_img_URL` = 'https://drive.usercontent.google.com/download?id=15rQExLC1OsWAE3QAP3CP5xVG7kLgnIPG&export=view&authuser=0' WHERE (`idEMPRENDIMIENTOS` = '3');
 
