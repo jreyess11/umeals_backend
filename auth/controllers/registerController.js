@@ -14,7 +14,7 @@ export const register = async (req, res) => {
         }
 
         const [result] = await pool.query(
-            'INSERT INTO USUARIO (Nombre, correo, password) VALUES (?, ?, ?, ?)',
+            'INSERT INTO USUARIO (Nombre, correo, password) VALUES (?, ?, ?)',
             [Nombre, correo, password || null]
         );
 
