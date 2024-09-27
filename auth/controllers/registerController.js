@@ -1,7 +1,7 @@
 import { pool } from "../database/db.js";
 
 export const register = async (req, res) => {
-    const { Nombre, correo, password } = req.body;
+    const { Nombre, correo, password, Apellidos, telefono } = req.body;
 
     if (!Nombre || !correo || !password) {
         return res.status(400).json({ success: false, message: 'Nombre, correo y contraseña son requeridos' });
@@ -14,8 +14,8 @@ export const register = async (req, res) => {
         }
 
         const [result] = await pool.query(
-            'INSERT INTO USUARIO (Nombre, correo, password) VALUES (?, ?, ?)',
-            [Nombre, correo, password || null]
+            'INSERT INTO USUARIO (Nombre, correo, password, Apellidos, telefono) VALUES (?, ?, ?, ?, ?)',
+            [Nombre, correo, password, Apellidos, telefono || null]
         );
 
         res.status(201).json({ success: true, message: 'Usuario registrado exitosamente', userId: result.insertId });

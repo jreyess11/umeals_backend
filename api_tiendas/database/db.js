@@ -1,6 +1,6 @@
 import {createPool} from 'mysql2';
-// import { config } from 'dotenv';
-// config({ path: './env/.env' });
+ import { config } from 'dotenv';
+ config({ path: './env/.env' });
 
 export const pool = createPool({
     host: process.env.DB_HOST,
