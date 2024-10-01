@@ -60,3 +60,33 @@ UPDATE umeals.emprendimiento SET portada_img_URL = 'https://drive.usercontent.go
 INSERT INTO umeals.carrusel_images (idCARRUSEL_IMAGES, ImgPath) VALUES ('1', 'https://drive.usercontent.google.com/download?id=1aAfY7-U9b7_oqsU62qy54MxcaetMDWv7&export=view&authuser=0');
 UPDATE `umeals`.`emprendimiento` SET `logotipo_img_url` = 'https://drive.usercontent.google.com/download?id=1ju9l1GNMEmTRAprNdrsJuuqGQVvpDk2X' WHERE (`idEMPRENDIMIENTOS` = '1');
 UPDATE `umeals`.`emprendimiento` SET `logotipo_img_url` = 'https://drive.usercontent.google.com/download?id=1ju9l1GNMEmTRAprNdrsJuuqGQVvpDk2X' WHERE (`idEMPRENDIMIENTOS` = '2');
+UPDATE `umeals`.`emprendimiento` SET `logotipo_img_url` = 'https://drive.usercontent.google.com/download?id=1dLvcRMvCKcCxIRjQ3pRCb0hHLJkR_ZuC' WHERE (`idEMPRENDIMIENTOS` = '1');
+UPDATE `umeals`.`emprendimiento` SET `logotipo_img_url` = 'https://drive.usercontent.google.com/download?id=1dLvcRMvCKcCxIRjQ3pRCb0hHLJkR_ZuC' WHERE (`idEMPRENDIMIENTOS` = '2');
+INSERT INTO `umeals`.`carrusel_images` (`idCARRUSEL_IMAGES`, `ImgPath`) VALUES ('2', 'https://drive.usercontent.google.com/download?id=1F9iWckynDi312uDylJoOkaUOKmEbGgvM');
+INSERT INTO `umeals`.`carrusel_images` (`idCARRUSEL_IMAGES`, `ImgPath`) VALUES ('3', 'https://drive.usercontent.google.com/download?id=1monTAeTJ7_VS-iOKFhTbnPrFIdHg_Xa0');
+INSERT INTO `umeals`.`carrusel_images` (`idCARRUSEL_IMAGES`, `ImgPath`) VALUES ('4', 'https://drive.usercontent.google.com/download?id=1ZdZjtXkvM0oVZGgIkd9n_53a3l0JgrbR');
+UPDATE `umeals`.`emprendimiento` SET `portada_img_URL` = 'https://drive.usercontent.google.com/download?id=1cjt7R-NCe4MVNU0CtbGo1Kr9A8oFuCGs' WHERE (`idEMPRENDIMIENTOS` = '4');
+
+INSERT INTO `umeals`.`usuario` (`idUSUARIOS`, `Nombre`, `correo`, `password`, `Apellidos`, `telefono`) VALUES ('1', 'Andres', 'andres@gmail.com', '123', 'Arango', '3002336900');
+UPDATE `umeals`.`emprendimiento` SET `contacto` = '3002336900' WHERE (`idEMPRENDIMIENTOS` = '1');
+UPDATE `umeals`.`emprendimiento` SET `contacto` = '3012009642' WHERE (`idEMPRENDIMIENTOS` = '2');
+UPDATE `umeals`.`emprendimiento` SET `contacto` = '3222784313' WHERE (`idEMPRENDIMIENTOS` = '3');
+UPDATE `umeals`.`emprendimiento` SET `contacto` = '3165302109' WHERE (`idEMPRENDIMIENTOS` = '4');
+
+UPDATE `umeals`.`emprendimiento` SET `horarios` = 
+    '{
+      "lunes": "7:00 AM - 9:00 AM",
+      "martes": "9:00 AM - 11:00 AM",
+      "miércoles": "6:00 AM - 8:00 AM",
+      "jueves": "4:00 PM - 6:00 PM",
+      "viernes": "10:00 AM - 12:00 PM"
+    }'
+    WHERE (`idEMPRENDIMIENTOS` = '1');
+    UPDATE `umeals`.`emprendimiento` SET `horarios` = '{\"lunes\": \"7:00 AM - 9:00 AM\", \"jueves\": \"4:00 PM - 6:00 PM\", \"martes\": \"9:00 AM - 11:00 AM\", \"viernes\": \"10:00 AM - 2:00 PM\", \"miércoles\": \"8:00 AM - 10:00 AM\"}' WHERE (`idEMPRENDIMIENTOS` = '2');
+UPDATE `umeals`.`emprendimiento` SET `horarios` = '{\"lunes\": \"7:00 AM - 9:00 AM\", \"jueves\": \"4:00 PM - 6:00 PM\", \"martes\": \"6:00 AM - 11:00 AM\", \"viernes\": \"10:00 AM - 5:00 PM\", \"miércoles\": \"10:00 AM - 3:00 PM\"}' WHERE (`idEMPRENDIMIENTOS` = '3');
+UPDATE `umeals`.`emprendimiento` SET `horarios` = '{\"lunes\": \"7:00 AM - 12:00 PM\", \"jueves\": \"6:00 AM - 6:00 PM\", \"martes\": \"9:00 AM - 11:00 AM\", \"viernes\": \"10:00 AM - 12:00 PM\", \"miércoles\": \"6:00 AM - 8:00 AM\"}' WHERE (`idEMPRENDIMIENTOS` = '4');
+
+UPDATE `umeals`.`emprendimiento` SET `ubicacion` = 'https://maps.app.goo.gl/HW8wFGF9Mfa14RFE7' WHERE (`idEMPRENDIMIENTOS` = '1');
+UPDATE `umeals`.`emprendimiento` SET `ubicacion` = 'https://maps.app.goo.gl/HW8wFGF9Mfa14RFE7' WHERE (`idEMPRENDIMIENTOS` = '2');
+UPDATE `umeals`.`emprendimiento` SET `ubicacion` = 'https://maps.app.goo.gl/HW8wFGF9Mfa14RFE7' WHERE (`idEMPRENDIMIENTOS` = '3');
+UPDATE `umeals`.`emprendimiento` SET `ubicacion` = 'https://maps.app.goo.gl/HW8wFGF9Mfa14RFE7' WHERE (`idEMPRENDIMIENTOS` = '4');
