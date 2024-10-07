@@ -32,15 +32,20 @@ export const getCarruselImgs = async (req, res) => {
 };
 
 //! login
+
+const JWT_SECRET = '123Ñ+*'; 
+
 export const login = async (req, res) => {
     const { correo, password } = req.body;
 
+   
     if (!correo || !password) {
         return res.status(400).json({ success: false, message: 'Correo y contraseña son requeridos' });
     }
 
     try {
-        const [rows] = await pool.query('SELECT * FROM USUARIO WHERE correo = ?', [correo]);
+        
+        const [rows] = await pool.promise().query('SELECT * FROM USUARIO WHERE correo = ?', [correo]);
 
         if (rows.length === 0) {
             return res.status(401).json({ success: false, message: 'Correo o contraseña incorrectos' });
@@ -48,9 +53,14 @@ export const login = async (req, res) => {
 
         const user = rows[0];
 
+        
         if (user.password === password) {
-            const token = await JwtAdapter.generateToken({ correo: user.correo });
+            
+            const token = jwt.sign({ correo: user.correo, userId: user.id }, JWT_SECRET, {
+                expiresIn: '1d', 
+            });
             console.log('Token generado:', token);
+
             return res.status(200).json({ success: true, message: 'Inicio de sesión exitoso', token });
         } else {
             return res.status(401).json({ success: false, message: 'Correo o contraseña incorrectos' });
@@ -60,6 +70,7 @@ export const login = async (req, res) => {
         return res.status(500).json({ success: false, message: 'Error del servidor' });
     }
 };
+
 
 //! registro
 
@@ -71,7 +82,7 @@ export const register = async (req, res) => {
     }
 
     try {
-        const [existingUsers] = await pool.query('SELECT * FROM USUARIO WHERE correo = ?', [correo]);
+        const [existingUsers] = await pool.promise().query('SELECT * FROM USUARIO WHERE correo = ?', [correo]);
         if (existingUsers.length > 0) {
             return res.status(400).json({ success: false, message: 'Correo ya registrado' });
         }
@@ -110,9 +121,9 @@ export const verifyToken = (req, res, next) => {
 //! Obtener información del usuario (nombre, correo, imagen, etc)
 export const getUserInformation = async (req, res) => {
     try {
-        const userId = req.user.id; 
+        const userCorreo = req.user.correo; 
 
-        const [rows] = await pool.promise().query('SELECT * FROM USUARIO WHERE id = ?', [userId]);
+        const [rows] = await pool.promise().query('SELECT * FROM USUARIO WHERE correo = ?', [userCorreo]);
 
         if (rows.length > 0) {
             res.json(rows[0]); 
