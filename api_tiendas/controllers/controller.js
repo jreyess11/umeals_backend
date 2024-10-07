@@ -84,3 +84,40 @@ export const register = async (req, res) => {
         res.status(500).json({ success: false, message: 'Error del servidor' });
     }
 };
+
+
+//! PA VERIFICAR Y DECODIFICAR EL JWT
+import jwt from 'jsonwebtoken';
+
+export const verifyToken = (req, res, next) => {
+    const token = req.header('Authorization')?.split(' ')[1]; 
+    if (!token) {
+        return res.status(401).json({ message: 'Acceso denegado. No hay token proporcionado.' });
+    }
+
+    try {
+        const verified = jwt.verify(token, process.env.JWT_SECRET); 
+        req.user = verified; 
+        next(); 
+    } catch (error) {
+        res.status(400).json({ message: 'Token no válido.' });
+    }
+};
+
+//! Obtener información del usuario (nombre, correo, imagen, etc)
+export const getUserInformation = async (req, res) => {
+    try {
+        const userId = req.user.id; 
+
+        const [rows] = await pool.promise().query('SELECT * FROM USUARIO WHERE id = ?', [userId]);
+
+        if (rows.length > 0) {
+            res.json(rows[0]); 
+        } else {
+            res.json({ message: 'No se encontró información del usuario' });
+        }
+    } catch (error) {
+        console.error('Error al obtener la información del usuario:', error);
+        res.status(500).json({ message: 'Error al obtener información del usuario' });
+    }
+};
