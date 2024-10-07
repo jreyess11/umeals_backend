@@ -1,14 +1,13 @@
 import { Router } from 'express';
-import { getEmprendimientos } from '../controllers/controller.js';
-import { getCarruselImgs } from '../controllers/controller.js';
-import { login } from '../controllers/controller.js';
-import { register } from '../controllers/controller.js';
+import { getEmprendimientos, getCarruselImgs, login, register } from '../controllers/controller.js';
+import { validateTokenMiddleware } from '../middlewares/validateTokenMiddleware.js';
 
 const router = Router();
 
-router.get('/emprendimientos', getEmprendimientos); 
-router.get('/getCarruselImages', getCarruselImgs);
-router.post('/login', login); 
+router.get('/emprendimientos', validateTokenMiddleware, getEmprendimientos);
+router.get('/getCarruselImages', validateTokenMiddleware, getCarruselImgs);
+
+router.post('/login', login);
 router.post('/register', register);
 
 export default router;

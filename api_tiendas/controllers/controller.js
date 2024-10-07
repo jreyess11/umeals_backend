@@ -1,4 +1,5 @@
 import { pool } from "../database/db.js";
+import { JwtAdapter } from "../config/jwt.adapter.js";
 
 //! getEmprendimientos
 export const getEmprendimientos = async (req, res) => {
@@ -26,7 +27,7 @@ export const getCarruselImgs = async (req, res) => {
         }
     } catch (error) {
         console.error('Error al obtener las imagenes:', error);
-        res.status(500).json({ message: 'Error al obtener las iamgenes' });
+        res.status(500).json({ message: 'Error al obtener las imágenes' });
     }
 };
 
@@ -47,14 +48,16 @@ export const login = async (req, res) => {
 
         const user = rows[0];
 
-        if (user.password == password) {
-            res.status(200).json({ success: true, message: 'Inicio de sesión exitoso' });
+        if (user.password === password) {
+            const token = await JwtAdapter.generateToken({ correo: user.correo });
+            console.log('Token generado:', token);
+            return res.status(200).json({ success: true, message: 'Inicio de sesión exitoso', token });
         } else {
-            res.status(401).json({ success: false, message: 'Correo o contraseña incorrectos' });
+            return res.status(401).json({ success: false, message: 'Correo o contraseña incorrectos' });
         }
     } catch (error) {
         console.error('Error al procesar la solicitud de inicio de sesión:', error);
-        res.status(500).json({ success: false, message: 'Error del servidor' });
+        return res.status(500).json({ success: false, message: 'Error del servidor' });
     }
 };
 
