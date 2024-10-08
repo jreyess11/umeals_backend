@@ -1,5 +1,5 @@
 import { pool } from "../database/db.js";
-import { JwtAdapter } from "../config/jwt.adapter.js";
+
 
 //! getEmprendimientos
 export const getEmprendimientos = async (req, res) => {
@@ -103,6 +103,7 @@ export const register = async (req, res) => {
 //! PA VERIFICAR Y DECODIFICAR EL JWT
 import jwt from 'jsonwebtoken';
 
+
 export const verifyToken = (req, res, next) => {
     const token = req.header('Authorization')?.split(' ')[1]; 
     if (!token) {
@@ -110,7 +111,7 @@ export const verifyToken = (req, res, next) => {
     }
 
     try {
-        const verified = jwt.verify(token, process.env.JWT_SECRET); 
+        const verified = jwt.verify(token, JWT_SECRET); 
         req.user = verified; 
         next(); 
     } catch (error) {
@@ -118,7 +119,7 @@ export const verifyToken = (req, res, next) => {
     }
 };
 
-//! Obtener información del usuario (nombre, correo, imagen, etc)
+
 export const getUserInformation = async (req, res) => {
     try {
         const userCorreo = req.user.correo; 
