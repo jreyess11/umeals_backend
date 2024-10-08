@@ -1,6 +1,5 @@
 import { Router } from 'express';
-import { getEmprendimientos, getProductos, login, register, verifyToken, getUserInformation } from '../controllers/controller.js';
-import { getCarruselImgs } from '../controllers/carrusel_controler.js';
+import { getCarruselImgs, getEmprendimientos, getProductos, login, register, verifyToken, getUserInformation } from '../controllers/controller.js';
 const router = Router();
 
 router.get('/emprendimientos', getEmprendimientos);
