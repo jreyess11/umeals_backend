@@ -46,6 +46,94 @@ export const getProductos = async (req, res) => {
         res.status(500).json({ message: 'Error al obtener los productos' });
     }
 };
+
+export const getFavoriteEmprendimientos = async (req, res) => {
+
+    try {
+        const userId = req.user.userId;
+        
+        const [favoriteRows] = await pool.promise().query(
+            'SELECT EMPRENDIMIENTO_idEMPRENDIMIENTOS FROM emprendimientos_favoritos WHERE USUARIO_idUSUARIOS = ?',
+            [userId]
+        );
+
+        if (favoriteRows.length === 0) {
+            return res.status(204).json({ message: 'No hay emprendimientos favoritos' });
+        }
+
+        const emprendimientoIds = favoriteRows.map(row => row.EMPRENDIMIENTO_idEMPRENDIMIENTOS);
+        const [emprendimientoRows] = await pool.promise().query(
+            'SELECT * FROM emprendimiento WHERE idEMPRENDIMIENTOS IN (?)',
+            [emprendimientoIds]
+        );
+
+        res.json(emprendimientoRows);
+
+    } catch (error) {
+        console.error('Error al obtener los emprendimientos favoritos:', error);
+        res.status(500).json({ message: 'Error al obtener los emprendimientos favoritos' });
+    }
+};
+
+export const addFavoriteEmprendimiento = async (req, res) => {
+    const { id } = req.body;
+    const userId = req.user.userId;
+
+    if (!id) {
+        return res.status(400).json({ message: 'ID de emprendimiento es requerido' });
+    }
+
+    try {
+        const [existingFavorite] = await pool.promise().query(
+            'SELECT * FROM emprendimientos_favoritos WHERE EMPRENDIMIENTO_idEMPRENDIMIENTOS = ? AND USUARIO_idUSUARIOS = ?',
+            [id, userId]
+        );
+
+        if (existingFavorite.length > 0) {
+            return res.status(400).json({ message: 'El emprendimiento ya está en favoritos' });
+        }
+
+        await pool.promise().query(
+            'INSERT INTO emprendimientos_favoritos (EMPRENDIMIENTO_idEMPRENDIMIENTOS, USUARIO_idUSUARIOS) VALUES (?, ?)',
+            [id, userId]
+        );
+
+        res.status(201).json({ message: 'Emprendimiento añadido a favoritos exitosamente' });
+    } catch (error) {
+        console.error('Error al añadir el emprendimiento a favoritos:', error);
+        res.status(500).json({ message: 'Error al añadir el emprendimiento a favoritos' });
+    }
+};
+
+export const removeFavoriteEmprendimiento = async (req, res) => {
+    const id = req.params.id;
+    const userId = req.user.userId;
+
+    if (!id) {
+        return res.status(400).json({ message: 'ID de emprendimiento es requerido' });
+    }
+
+    try {
+        const [existingFavorite] = await pool.promise().query(
+            'SELECT * FROM emprendimientos_favoritos WHERE EMPRENDIMIENTO_idEMPRENDIMIENTOS = ? AND USUARIO_idUSUARIOS = ?',
+            [id, userId]
+        );
+
+        if (existingFavorite.length === 0) {
+            return res.status(400).json({ message: 'El emprendimiento no está en favoritos' });
+        }
+
+        await pool.promise().query(
+            'DELETE FROM emprendimientos_favoritos WHERE EMPRENDIMIENTO_idEMPRENDIMIENTOS = ? AND USUARIO_idUSUARIOS = ?',
+            [id, userId]
+        );
+
+        res.status(200).json({ message: 'Emprendimiento eliminado de favoritos exitosamente' });
+    } catch (error) {
+        console.error('Error al eliminar el emprendimiento de favoritos:', error);
+        res.status(500).json({ message: 'Error al eliminar el emprendimiento de favoritos' });
+    }
+};
 //! carrusel imagese
 export const getCarruselImgs = async (req, res) => {
     try {
@@ -81,12 +169,12 @@ export const login = async (req, res) => {
             return res.status(401).json({ success: false, message: 'Correo o contraseña incorrectos' });
         }
 
-        const user = rows[0];
+        const user = rows[0];        
 
         
         if (user.password === password) {
             
-            const token = jwt.sign({ correo: user.correo, userId: user.id }, JWT_SECRET, {
+            const token = jwt.sign({ correo: user.correo, userId: user.idUSUARIOS }, JWT_SECRET, {
                 expiresIn: '1d', 
             });
             console.log('Token generado:', token);
@@ -117,7 +205,7 @@ export const register = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Correo ya registrado' });
         }
 
-        const [result] = await pool.query(
+        const [result] = await pool.promise().query(
             'INSERT INTO USUARIO (Nombre, correo, password, Apellidos, telefono) VALUES (?, ?, ?, ?, ?)',
             [Nombre, correo, password, Apellidos, telefono || null]
         );
