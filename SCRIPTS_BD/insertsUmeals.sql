@@ -77,14 +77,14 @@ UPDATE `umeals`.`emprendimiento` SET `horarios` =
     '{
       "lunes": "7:00 AM - 9:00 AM",
       "martes": "9:00 AM - 11:00 AM",
-      "miércoles": "6:00 AM - 8:00 AM",
+      "miercoles": "6:00 AM - 8:00 AM",
       "jueves": "4:00 PM - 6:00 PM",
       "viernes": "10:00 AM - 12:00 PM"
     }'
     WHERE (`idEMPRENDIMIENTOS` = '1');
-    UPDATE `umeals`.`emprendimiento` SET `horarios` = '{\"lunes\": \"7:00 AM - 9:00 AM\", \"jueves\": \"4:00 PM - 6:00 PM\", \"martes\": \"9:00 AM - 11:00 AM\", \"viernes\": \"10:00 AM - 2:00 PM\", \"miércoles\": \"8:00 AM - 10:00 AM\"}' WHERE (`idEMPRENDIMIENTOS` = '2');
-UPDATE `umeals`.`emprendimiento` SET `horarios` = '{\"lunes\": \"7:00 AM - 9:00 AM\", \"jueves\": \"4:00 PM - 6:00 PM\", \"martes\": \"6:00 AM - 11:00 AM\", \"viernes\": \"10:00 AM - 5:00 PM\", \"miércoles\": \"10:00 AM - 3:00 PM\"}' WHERE (`idEMPRENDIMIENTOS` = '3');
-UPDATE `umeals`.`emprendimiento` SET `horarios` = '{\"lunes\": \"7:00 AM - 12:00 PM\", \"jueves\": \"6:00 AM - 6:00 PM\", \"martes\": \"9:00 AM - 11:00 AM\", \"viernes\": \"10:00 AM - 12:00 PM\", \"miércoles\": \"6:00 AM - 8:00 AM\"}' WHERE (`idEMPRENDIMIENTOS` = '4');
+    UPDATE `umeals`.`emprendimiento` SET `horarios` = '{\"lunes\": \"7:00 AM - 9:00 AM\", \"jueves\": \"4:00 PM - 6:00 PM\", \"martes\": \"9:00 AM - 11:00 AM\", \"viernes\": \"10:00 AM - 2:00 PM\", \"miercoles\": \"8:00 AM - 10:00 AM\"}' WHERE (`idEMPRENDIMIENTOS` = '2');
+UPDATE `umeals`.`emprendimiento` SET `horarios` = '{\"lunes\": \"7:00 AM - 9:00 AM\", \"jueves\": \"4:00 PM - 6:00 PM\", \"martes\": \"6:00 AM - 11:00 AM\", \"viernes\": \"10:00 AM - 5:00 PM\", \"miercoles\": \"10:00 AM - 3:00 PM\"}' WHERE (`idEMPRENDIMIENTOS` = '3');
+UPDATE `umeals`.`emprendimiento` SET `horarios` = '{\"lunes\": \"7:00 AM - 12:00 PM\", \"jueves\": \"6:00 AM - 6:00 PM\", \"martes\": \"9:00 AM - 11:00 AM\", \"viernes\": \"10:00 AM - 12:00 PM\", \"miercoles\": \"6:00 AM - 8:00 AM\"}' WHERE (`idEMPRENDIMIENTOS` = '4');
 
 UPDATE `umeals`.`emprendimiento` SET `ubicacion` = 'https://maps.app.goo.gl/HW8wFGF9Mfa14RFE7' WHERE (`idEMPRENDIMIENTOS` = '1');
 UPDATE `umeals`.`emprendimiento` SET `ubicacion` = 'https://maps.app.goo.gl/HW8wFGF9Mfa14RFE7' WHERE (`idEMPRENDIMIENTOS` = '2');
