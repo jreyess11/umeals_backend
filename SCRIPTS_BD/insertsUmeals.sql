@@ -75,11 +75,11 @@ UPDATE `umeals`.`emprendimiento` SET `contacto` = '3165302109' WHERE (`idEMPREND
 
 UPDATE `umeals`.`emprendimiento` SET `horarios` = 
     '{
-      "lunes": "7:00 AM - 9:00 AM",
-      "martes": "9:00 AM - 11:00 AM",
-      "miercoles": "6:00 AM - 8:00 AM",
-      "jueves": "4:00 PM - 6:00 PM",
-      "viernes": "10:00 AM - 12:00 PM"
+      "lunes": "7:00 - 9:00",
+      "martes": "9:00 - 11:00",
+      "miercoles": "6:00 - 8:00",
+      "jueves": "16:00 - 18:00",
+      "viernes": "10:00 - 12:00"
     }'
     WHERE (`idEMPRENDIMIENTOS` = '1');
     UPDATE `umeals`.`emprendimiento` SET `horarios` = '{\"lunes\": \"7:00 AM - 9:00 AM\", \"jueves\": \"4:00 PM - 6:00 PM\", \"martes\": \"9:00 AM - 11:00 AM\", \"viernes\": \"10:00 AM - 2:00 PM\", \"miercoles\": \"8:00 AM - 10:00 AM\"}' WHERE (`idEMPRENDIMIENTOS` = '2');
