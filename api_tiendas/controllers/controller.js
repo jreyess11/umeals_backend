@@ -16,7 +16,7 @@ export const getEmprendimientos = async (req, res) => {
     }
 };
 
-//! carrusel imagese
+//! carrusel imagesCarrusel
 export const getCarruselImgs = async (req, res) => {
     try {
         const [rows] = await pool.promise().query('SELECT * FROM carrusel_images');
@@ -119,7 +119,7 @@ export const verifyToken = (req, res, next) => {
     }
 };
 
-
+//! es para obtener la info del user
 export const getUserInformation = async (req, res) => {
     try {
         const userCorreo = req.user.correo; 
@@ -134,5 +134,58 @@ export const getUserInformation = async (req, res) => {
     } catch (error) {
         console.error('Error al obtener la información del usuario:', error);
         res.status(500).json({ message: 'Error al obtener información del usuario' });
+    }
+};
+//! si
+export const updateUser = async (req, res) => {
+    const { Nombre, Apellidos, telefono, imageURL } = req.body; 
+    const { correo } = req.user; 
+
+    if (!correo) {
+        return res.status(400).json({ success: false, message: 'Correo no encontrado en el token' });
+    }
+
+    try {
+        const [existingUser] = await pool.promise().query('SELECT * FROM USUARIO WHERE correo = ?', [correo]);
+
+        if (existingUser.length === 0) {
+            return res.status(404).json({ success: false, message: 'Usuario no encontrado' });
+        }
+
+        const fieldsToUpdate = [];
+        const values = [];
+
+        if (Nombre) {
+            fieldsToUpdate.push('Nombre = ?');
+            values.push(Nombre);
+        }
+        if (Apellidos) {
+            fieldsToUpdate.push('Apellidos = ?');
+            values.push(Apellidos);
+        }
+        if (telefono) {
+            fieldsToUpdate.push('telefono = ?');
+            values.push(telefono);
+        }
+        if (imageURL) {
+            fieldsToUpdate.push('imageURL = ?');
+            values.push(imageURL);
+        }
+
+        // Si no hay campos para actualizar, devolvemos un error
+        if (fieldsToUpdate.length === 0) {
+            return res.status(400).json({ success: false, message: 'No hay campos para actualizar' });
+        }
+
+        values.push(correo); // Añadimos el correo a los valores para la consulta
+
+        const updateQuery = `UPDATE USUARIO SET ${fieldsToUpdate.join(', ')} WHERE correo = ?`;
+        
+        await pool.promise().query(updateQuery, values);
+
+        res.status(200).json({ success: true, message: 'Usuario actualizado exitosamente' });
+    } catch (error) {
+        console.error('Error al actualizar el usuario:', error);
+        res.status(500).json({ success: false, message: 'Error del servidor' });
     }
 };
