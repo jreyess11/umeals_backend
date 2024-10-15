@@ -6,14 +6,14 @@ export const getEmprendimientos = async (req, res) => {
     const id = req.params.id;
     try {
         if (id) {
-            const [rows] = await pool.promise().query('SELECT * FROM emprendimiento where idEMPRENDIMIENTOS = ?', [id]);
+            const [rows] = await pool.promise().query('SELECT * FROM EMPRENDIMIENTO where idEMPRENDIMIENTOS = ?', [id]);
             if (rows.length > 0) {
                 res.json(rows[0]);
             } else {
                 res.json({ message: 'No se encontro el emprendimiento' });
             }
         } else {
-            const [rows] = await pool.promise().query('SELECT * FROM emprendimiento');
+            const [rows] = await pool.promise().query('SELECT * FROM EMPRENDIMIENTO');
             if (rows.length > 0) {
                 res.json(rows);
             } else {
@@ -31,7 +31,7 @@ export const getProductos = async (req, res) => {
     const id = req.params.id;
     try {
         if (id) {
-            const [rows] = await pool.promise().query('SELECT * FROM productos where EMPRENDIMIENTO_idEMPRENDIMIENTOS = ?', [id]);
+            const [rows] = await pool.promise().query('SELECT * FROM PRODUCTOS where EMPRENDIMIENTO_idEMPRENDIMIENTOS = ?', [id]);
             if (rows.length > 0) {
                 res.json(rows);
             } else {
@@ -53,7 +53,7 @@ export const getFavoriteEmprendimientos = async (req, res) => {
         const userId = req.user.userId;
         
         const [favoriteRows] = await pool.promise().query(
-            'SELECT EMPRENDIMIENTO_idEMPRENDIMIENTOS FROM emprendimientos_favoritos WHERE USUARIO_idUSUARIOS = ?',
+            'SELECT EMPRENDIMIENTO_idEMPRENDIMIENTOS FROM EMPRENDIMIENTO_FAVORITOS WHERE USUARIO_idUSUARIOS = ?',
             [userId]
         );
 
@@ -85,7 +85,7 @@ export const addFavoriteEmprendimiento = async (req, res) => {
 
     try {
         const [existingFavorite] = await pool.promise().query(
-            'SELECT * FROM emprendimientos_favoritos WHERE EMPRENDIMIENTO_idEMPRENDIMIENTOS = ? AND USUARIO_idUSUARIOS = ?',
+            'SELECT * FROM EMPRENDIMIENTO_FAVORITOS WHERE EMPRENDIMIENTO_idEMPRENDIMIENTOS = ? AND USUARIO_idUSUARIOS = ?',
             [id, userId]
         );
 
@@ -137,7 +137,7 @@ export const removeFavoriteEmprendimiento = async (req, res) => {
 //! carrusel imagese
 export const getCarruselImgs = async (req, res) => {
     try {
-        const [rows] = await pool.promise().query('SELECT * FROM carrusel_images');
+        const [rows] = await pool.promise().query('SELECT * FROM CARRUSEL_IMAGES');
         if (rows.length > 0) {
             res.json(rows);
         } else {
@@ -252,5 +252,58 @@ export const getUserInformation = async (req, res) => {
     } catch (error) {
         console.error('Error al obtener la información del usuario:', error);
         res.status(500).json({ message: 'Error al obtener información del usuario' });
+    }
+};
+
+export const updateUser = async (req, res) => {
+    const { Nombre, Apellidos, telefono, imageURL } = req.body; 
+    const { correo } = req.user; 
+
+    if (!correo) {
+        return res.status(400).json({ success: false, message: 'Correo no encontrado en el token' });
+    }
+
+    try {
+        const [existingUser] = await pool.promise().query('SELECT * FROM USUARIO WHERE correo = ?', [correo]);
+
+        if (existingUser.length === 0) {
+            return res.status(404).json({ success: false, message: 'Usuario no encontrado' });
+        }
+
+        const fieldsToUpdate = [];
+        const values = [];
+
+        if (Nombre) {
+            fieldsToUpdate.push('Nombre = ?');
+            values.push(Nombre);
+        }
+        if (Apellidos) {
+            fieldsToUpdate.push('Apellidos = ?');
+            values.push(Apellidos);
+        }
+        if (telefono) {
+            fieldsToUpdate.push('telefono = ?');
+            values.push(telefono);
+        }
+        if (imageURL) {
+            fieldsToUpdate.push('imageURL = ?');
+            values.push(imageURL);
+        }
+
+        
+        if (fieldsToUpdate.length === 0) {
+            return res.status(400).json({ success: false, message: 'No hay campos para actualizar' });
+        }
+
+        values.push(correo);
+
+        const updateQuery = `UPDATE USUARIO SET ${fieldsToUpdate.join(', ')} WHERE correo = ?`;
+        
+        await pool.promise().query(updateQuery, values);
+
+        res.status(200).json({ success: true, message: 'Usuario actualizado exitosamente' });
+    } catch (error) {
+        console.error('Error al actualizar el usuario:', error);
+        res.status(500).json({ success: false, message: 'Error del servidor' });
     }
 };

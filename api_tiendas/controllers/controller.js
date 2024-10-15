@@ -172,12 +172,12 @@ export const updateUser = async (req, res) => {
             values.push(imageURL);
         }
 
-        // Si no hay campos para actualizar, devolvemos un error
+        
         if (fieldsToUpdate.length === 0) {
             return res.status(400).json({ success: false, message: 'No hay campos para actualizar' });
         }
 
-        values.push(correo); // Añadimos el correo a los valores para la consulta
+        values.push(correo);
 
         const updateQuery = `UPDATE USUARIO SET ${fieldsToUpdate.join(', ')} WHERE correo = ?`;
         

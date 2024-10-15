@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getCarruselImgs, getEmprendimientos, getFavoriteEmprendimientos, addFavoriteEmprendimiento, removeFavoriteEmprendimiento, getProductos, login, register, verifyToken, getUserInformation } from '../controllers/controller.js';
+import { getCarruselImgs, getEmprendimientos, getFavoriteEmprendimientos, addFavoriteEmprendimiento, removeFavoriteEmprendimiento, getProductos, login, register, verifyToken, getUserInformation, updateUser } from '../controllers/controller.js';
 const router = Router();
 
 router.get('/emprendimientos', getEmprendimientos);
@@ -12,5 +12,6 @@ router.get('/getCarruselImages', getCarruselImgs);
 router.get('/userInfo', verifyToken, getUserInformation);
 router.post('/login', login);
 router.post('/register', register);
+router.put('/update', verifyToken, updateUser);
 
 export default router;
