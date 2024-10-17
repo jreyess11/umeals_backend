@@ -53,7 +53,7 @@ export const getFavoriteEmprendimientos = async (req, res) => {
         const userId = req.user.userId;
         
         const [favoriteRows] = await pool.promise().query(
-            'SELECT EMPRENDIMIENTO_idEMPRENDIMIENTOS FROM EMPRENDIMIENTO_FAVORITOS WHERE USUARIO_idUSUARIOS = ?',
+            'SELECT EMPRENDIMIENTO_idEMPRENDIMIENTOS FROM EMPRENDIMIENTOS_FAVORITOS WHERE USUARIO_idUSUARIOS = ?',
             [userId]
         );
 
@@ -85,7 +85,7 @@ export const addFavoriteEmprendimiento = async (req, res) => {
 
     try {
         const [existingFavorite] = await pool.promise().query(
-            'SELECT * FROM EMPRENDIMIENTO_FAVORITOS WHERE EMPRENDIMIENTO_idEMPRENDIMIENTOS = ? AND USUARIO_idUSUARIOS = ?',
+            'SELECT * FROM EMPRENDIMIENTOS_FAVORITOS WHERE EMPRENDIMIENTO_idEMPRENDIMIENTOS = ? AND USUARIO_idUSUARIOS = ?',
             [id, userId]
         );
 
@@ -94,7 +94,7 @@ export const addFavoriteEmprendimiento = async (req, res) => {
         }
 
         await pool.promise().query(
-            'INSERT INTO emprendimientos_favoritos (EMPRENDIMIENTO_idEMPRENDIMIENTOS, USUARIO_idUSUARIOS) VALUES (?, ?)',
+            'INSERT INTO EMPRENDIMIENTOS_FAVORITOS (EMPRENDIMIENTO_idEMPRENDIMIENTOS, USUARIO_idUSUARIOS) VALUES (?, ?)',
             [id, userId]
         );
 
@@ -115,7 +115,7 @@ export const removeFavoriteEmprendimiento = async (req, res) => {
 
     try {
         const [existingFavorite] = await pool.promise().query(
-            'SELECT * FROM emprendimientos_favoritos WHERE EMPRENDIMIENTO_idEMPRENDIMIENTOS = ? AND USUARIO_idUSUARIOS = ?',
+            'SELECT * FROM EMPRENDIMIENTOS_FAVORITOS WHERE EMPRENDIMIENTO_idEMPRENDIMIENTOS = ? AND USUARIO_idUSUARIOS = ?',
             [id, userId]
         );
 
@@ -124,7 +124,7 @@ export const removeFavoriteEmprendimiento = async (req, res) => {
         }
 
         await pool.promise().query(
-            'DELETE FROM emprendimientos_favoritos WHERE EMPRENDIMIENTO_idEMPRENDIMIENTOS = ? AND USUARIO_idUSUARIOS = ?',
+            'DELETE FROM EMPRENDIMIENTOS_FAVORITOS WHERE EMPRENDIMIENTO_idEMPRENDIMIENTOS = ? AND USUARIO_idUSUARIOS = ?',
             [id, userId]
         );
 
