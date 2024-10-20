@@ -237,7 +237,6 @@ export const verifyToken = (req, res, next) => {
     }
 };
 
-
 export const getUserInformation = async (req, res) => {
     try {
         const userCorreo = req.user.correo; 
@@ -245,15 +244,27 @@ export const getUserInformation = async (req, res) => {
         const [rows] = await pool.promise().query('SELECT * FROM USUARIO WHERE correo = ?', [userCorreo]);
 
         if (rows.length > 0) {
-            res.json(rows[0]); 
+            const user = rows[0];
+
+            
+            if (user.imageURL) {
+                user.imageURL = user.imageURL.toString('base64');
+            } else {
+                user.imageURL = null; 
+            }
+
+            res.json(user); 
         } else {
-            res.json({ message: 'No se encontró información del usuario' });
+            res.status(404).json({ message: 'No se encontró información del usuario' }); // Cambiar a 404 para "no encontrado"
         }
     } catch (error) {
         console.error('Error al obtener la información del usuario:', error);
         res.status(500).json({ message: 'Error al obtener información del usuario' });
     }
 };
+
+
+//! update
 
 export const updateUser = async (req, res) => {
     const { Nombre, Apellidos, telefono, imageURL } = req.body; 
@@ -287,7 +298,8 @@ export const updateUser = async (req, res) => {
         }
         if (imageURL) {
             fieldsToUpdate.push('imageURL = ?');
-            values.push(imageURL);
+            const imageBuffer = Buffer.from(imageURL, 'base64');
+            values.push(imageBuffer);
         }
 
         
